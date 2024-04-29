@@ -1,5 +1,6 @@
 import 'package:api_state/constants/colorConstants.dart';
 import 'package:api_state/controller/home_controller.dart';
+import 'package:api_state/view/favorite_screen/favorite_screen.dart';
 import 'package:api_state/view/news_read_screen/news_read_screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +31,12 @@ class _HomeScreenState extends State<HomeScreen> {
       length: providerObj.lstCategories.length,
       child: Scaffold(
         appBar: AppBar(
-          title: Text("NEWS"),
+          title: Text(
+            "NEWS",
+            style: TextStyle(
+                color: ColorConstants.primaryBlack,
+                fontWeight: FontWeight.w600),
+          ),
           actions: [
             DropdownButton(
               value: selectedDropDown,
@@ -53,12 +59,9 @@ class _HomeScreenState extends State<HomeScreen> {
             SizedBox(
               width: 30,
             ),
-            Icon(Icons.share),
-            SizedBox(
-              width: 30,
-            ),
           ],
           bottom: TabBar(
+              tabAlignment: TabAlignment.start,
               isScrollable: true,
               padding: EdgeInsets.zero,
               onTap: (value) {
@@ -72,14 +75,18 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               )),
         ),
-
-        drawer: Drawer(),
-
         body: providerObj.isLoading == true
             ? Center(child: CircularProgressIndicator())
             : providerObj.newsResModel?.articles?.length == null ||
                     providerObj.newsResModel?.articles?.length == 0
-                ? Center(child: Text("No Data Found"))
+                ? Center(
+                    child: Text(
+                    "No Data Found",
+                    style: TextStyle(
+                        color: ColorConstants.primaryBlack,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20),
+                  ))
                 : ListView.separated(
                     itemBuilder: (context, index) {
                       return Padding(
@@ -107,8 +114,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                   imageUrl: providerObj.newsResModel
                                           ?.articles?[index].urlToImage ??
                                       "",
+                                  placeholder: (context, url) => Center(
+                                      child: CircularProgressIndicator()),
                                   errorWidget: (context, url, error) => Image.asset(
                                       "assests/images/No-Image-Placeholder.svg.png"),
+                                ),
+                                SizedBox(
+                                  height: 10,
                                 ),
                                 Text(
                                   providerObj.newsResModel?.articles?[index]
@@ -135,14 +147,6 @@ class _HomeScreenState extends State<HomeScreen> {
                           height: 5,
                         ),
                     itemCount: providerObj.newsResModel?.articles?.length ?? 0),
-
-        // : ListView.builder(
-        //     itemCount: providerObj.newsResModel?.articles?.length ?? 0,
-        //     itemBuilder: (context, index) => ListTile(
-        //       title: Text(
-        //           providerObj.newsResModel?.articles?[index].title ?? ""),
-        //     ),
-        //   ),
       ),
     );
   }

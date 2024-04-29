@@ -20,7 +20,7 @@ class HomeController with ChangeNotifier {
   ];
 
   List<String> lstCountry = [
-    "ae",
+    "in",
     "ar",
     "ata",
     "ub",
@@ -42,7 +42,7 @@ class HomeController with ChangeNotifier {
     "id",
     "ie",
     "il",
-    "in",
+    "ae",
     "it",
     "jp",
     "kr",
@@ -75,23 +75,26 @@ class HomeController with ChangeNotifier {
   ];
 
   Future getHeadlines() async {
-    isLoading = true;
-    notifyListeners();
-    Uri url = Uri.parse(
-        "https://newsapi.org/v2/top-headlines?country=${lstCountry[selectedCountryIndex]}&category=${lstCategories[selectedCategoryIndex]}&apiKey=aa8aeffad29e4ba59f0f1b06ed69676e");
-
-    var res = await http.get(url);
-
-    if (res.statusCode == 200) {
-      print(res);
-      var decodedData = jsonDecode(res.body);
-      newsResModel = NewsResModel.fromJson(decodedData);
+    try {
+      isLoading = true;
       notifyListeners();
-    } else {
-      print("failed");
+      Uri url = Uri.parse(
+          "https://newsapi.org/v2/top-headlines?country=${lstCountry[selectedCountryIndex]}&category=${lstCategories[selectedCategoryIndex]}&apiKey=aa8aeffad29e4ba59f0f1b06ed69676e");
+
+      var res = await http.get(url);
+
+      if (res.statusCode == 200) {
+        print(res);
+        var decodedData = jsonDecode(res.body);
+        newsResModel = NewsResModel.fromJson(decodedData);
+      } else {
+        print("failed");
+      }
+      isLoading = false;
+      notifyListeners();
+    } catch (e) {
+      print(e.toString());
     }
-    isLoading = false;
-    notifyListeners();
   }
 
   void getSelectedCategoryIndex(int value) {
@@ -100,35 +103,9 @@ class HomeController with ChangeNotifier {
     notifyListeners();
   }
 
-  void getSelectedCountryIndex(int value){
-    selectedCountryIndex=value;
+  void getSelectedCountryIndex(int value) {
+    selectedCountryIndex = value;
     getHeadlines();
     notifyListeners();
   }
-
-//   Future getData() async {
-//     isLoading = true;
-//     notifyListeners();
-// // Step 1
-//     Uri url = Uri.parse(
-//         "https://newsapi.org/v2/everything?q=keyword&apiKey=aa8aeffad29e4ba59f0f1b06ed69676e");
-
-// // step 2
-//     var res = await http.get(url);
-
-// // step 3
-
-//     if (res.statusCode == 200) {
-//       // step 4-decode
-//       var decodedData = jsonDecode(res.body);
-
-// // step 5-convert to model class
-//       newsResModel = NewsResModel.fromJson(decodedData);
-// // step 6- state update
-//     } else {
-//       print("Failed");
-//     }
-//     isLoading = false;
-//     notifyListeners();
-//   }
 }

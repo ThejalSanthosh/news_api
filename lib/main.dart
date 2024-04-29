@@ -1,4 +1,7 @@
+import 'package:api_state/controller/favorite_controller.dart';
 import 'package:api_state/controller/home_controller.dart';
+import 'package:api_state/controller/search_controller.dart';
+import 'package:api_state/view/bottom_navigation_screen/bottom_nav_screen.dart';
 import 'package:api_state/view/home_screen/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -16,11 +19,11 @@ class MainScreen extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
           create: (context) => HomeController(),
-        )
+        ),ChangeNotifierProvider(create: (context) => FavoriteController(),),ChangeNotifierProvider(create: (context) => SearchScreenController(),)
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: HomeScreen(),
+        home: BottomNavScreen(),
       ),
     );
   }

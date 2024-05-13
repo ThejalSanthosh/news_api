@@ -28,7 +28,7 @@ class NewsReadScreen extends StatelessWidget {
                 },
                 icon: Consumer<FavoriteController>(
                     builder: (context, value, child) => Icon(
-                        value.lstArticle.contains(articles)
+                        value.isArticleAlreadySaved(articles!)
                             ? Icons.bookmark
                             : Icons.bookmark_border))),
             SizedBox(

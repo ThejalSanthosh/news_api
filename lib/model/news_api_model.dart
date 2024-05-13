@@ -4,67 +4,90 @@
 
 import 'dart:convert';
 
-NewsResModel newsResModelFromJson(String str) => NewsResModel.fromJson(json.decode(str));
+import 'package:hive/hive.dart';
+part 'news_api_model.g.dart';
+
+NewsResModel newsResModelFromJson(String str) =>
+    NewsResModel.fromJson(json.decode(str));
 
 String newsResModelToJson(NewsResModel data) => json.encode(data.toJson());
 
 class NewsResModel {
-    String? status;
-    int? totalResults;
-    List<Article>? articles;
+  String? status;
+  int? totalResults;
+  List<Article>? articles;
 
-    NewsResModel({
-        this.status,
-        this.totalResults,
-        this.articles,
-    });
+  NewsResModel({
+    this.status,
+    this.totalResults,
+    this.articles,
+  });
 
-    factory NewsResModel.fromJson(Map<String, dynamic> json) => NewsResModel(
+  factory NewsResModel.fromJson(Map<String, dynamic> json) => NewsResModel(
         status: json["status"],
         totalResults: json["totalResults"],
-        articles: json["articles"] == null ? [] : List<Article>.from(json["articles"]!.map((x) => Article.fromJson(x))),
-    );
+        articles: json["articles"] == null
+            ? []
+            : List<Article>.from(
+                json["articles"]!.map((x) => Article.fromJson(x))),
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "status": status,
         "totalResults": totalResults,
-        "articles": articles == null ? [] : List<dynamic>.from(articles!.map((x) => x.toJson())),
-    };
+        "articles": articles == null
+            ? []
+            : List<dynamic>.from(articles!.map((x) => x.toJson())),
+      };
 }
 
+@HiveType(typeId: 1)
 class Article {
-    Source? source;
-    String? author;
-    String? title;
-    String? description;
-    String? url;
-    String? urlToImage;
-    DateTime? publishedAt;
-    String? content;
+  @HiveField(1)
+  Source? source;
+  @HiveField(2)
+  String? author;
+  @HiveField(3)
+  String? title;
+  @HiveField(4)
+  String? description;
+  @HiveField(5)
+  String? url;
+  @HiveField(6)
+  String? urlToImage;
 
-    Article({
-        this.source,
-        this.author,
-        this.title,
-        this.description,
-        this.url,
-        this.urlToImage,
-        this.publishedAt,
-        this.content,
-    });
+  @HiveField(7)
+  @HiveField(8)
+  DateTime? publishedAt;
 
-    factory Article.fromJson(Map<String, dynamic> json) => Article(
+  @HiveField(10)
+  String? content;
+
+  Article({
+    this.source,
+    this.author,
+    this.title,
+    this.description,
+    this.url,
+    this.urlToImage,
+    this.publishedAt,
+    this.content,
+  });
+
+  factory Article.fromJson(Map<String, dynamic> json) => Article(
         source: json["source"] == null ? null : Source.fromJson(json["source"]),
         author: json["author"],
         title: json["title"],
         description: json["description"],
         url: json["url"],
         urlToImage: json["urlToImage"],
-        publishedAt: json["publishedAt"] == null ? null : DateTime.parse(json["publishedAt"]),
+        publishedAt: json["publishedAt"] == null
+            ? null
+            : DateTime.parse(json["publishedAt"]),
         content: json["content"],
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "source": source?.toJson(),
         "author": author,
         "title": title,
@@ -73,25 +96,28 @@ class Article {
         "urlToImage": urlToImage,
         "publishedAt": publishedAt?.toIso8601String(),
         "content": content,
-    };
+      };
 }
 
+@HiveType(typeId: 2)
 class Source {
-    dynamic id;
-    String? name;
+  @HiveField(1)
+  dynamic id;
+  @HiveField(2)
+  String? name;
 
-    Source({
-        this.id,
-        this.name,
-    });
+  Source({
+    this.id,
+    this.name,
+  });
 
-    factory Source.fromJson(Map<String, dynamic> json) => Source(
+  factory Source.fromJson(Map<String, dynamic> json) => Source(
         id: json["id"],
         name: json["name"],
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "id": id,
         "name": name,
-    };
+      };
 }

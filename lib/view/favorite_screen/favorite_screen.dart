@@ -26,7 +26,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          favoriteScreenState.lstArticle.length == 0
+          favoriteScreenState.lstArticleKeys.length == 0
               ? Center(
                   child: Text(
                   "Favorite Cart is Empty",
@@ -40,7 +40,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                   padding: const EdgeInsets.all(8.0),
                   child: ListView.separated(
                       itemBuilder: (context, index) {
-                        Article article = favoriteScreenState.lstArticle[index];
+                        Article? article = favoriteScreenState.getArticle(favoriteScreenState.lstArticleKeys[index]);
                         return ContainerWidget(
                           article: article,
                         );
@@ -48,7 +48,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                       separatorBuilder: (context, index) => SizedBox(
                             height: 15,
                           ),
-                      itemCount: favoriteScreenState.lstArticle.length),
+                      itemCount: favoriteScreenState.lstArticleKeys.length),
                 ))
         ],
       ),

@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 class ContainerWidget extends StatelessWidget {
   const ContainerWidget({super.key, required this.article});
 
-  final Article article;
+  final Article? article;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class ContainerWidget extends StatelessWidget {
             height: 150,
             width: 100,
             fit: BoxFit.cover,
-            imageUrl: article.urlToImage ?? "",
+            imageUrl: article?.urlToImage ?? "",
             placeholder: (context, url) =>
                 Center(child: CircularProgressIndicator()),
             errorWidget: (context, url, error) =>
@@ -43,7 +43,7 @@ class ContainerWidget extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Center(
-                      child: Text(article.title.toString()),
+                      child: Text(article?.title?.toString()??""),
                     ),
                   ),
                 ),
@@ -54,7 +54,7 @@ class ContainerWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      article.author.toString(),
+                      article?.author.toString()??"",
                       style: TextStyle(color: Colors.black),
                     ),
                     Text(
